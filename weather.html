@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clima</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Consulta del Clima</h1>
+        <form action="/weather" method="post">
+            <div class="form-group">
+                <label for="city">Ciudad:</label>
+                <input type="text" class="form-control" id="city" name="city" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Consultar Clima</button>
+        </form>
+
+        {% if weather_data %}
+            <h2 class="mt-5">Clima en {{ weather_data.city_name }}</h2>
+            <p>Temperatura: {{ weather_data.temperature }}°C</p>
+            <p>Humedad: {{ weather_data.humidity }}%</p>
+            <p>Descripción: {{ weather_data.description }}</p>
+            <p>Fecha y Hora del Clima: {{ weather_data.date_time }}</p>
+
+            <!-- Botón para guardar el resultado -->
+            <form action="/save" method="post">
+                <input type="hidden" name="city" value="{{ weather_data.city_name }}">
+                <button type="submit" class="btn btn-success">
+                    Guardar <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive" viewBox="0 0 16 16">
+                      <path d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1V2zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5H2zm13-3H1v2h14V2zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+                    </svg>
+                </button>
+            </form>
+        {% endif %}
+
+        <!-- Recuadro para las ciudades guardadas -->
+        <div class="mt-5">
+            <h2>Ciudades Guardadas</h2>
+            <ul>
+                {% for city in saved_cities %}
+                    <li>{{ city }} <button type="button" class="btn btn-danger btn-sm" onclick="deleteCity('{{ city }}')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                          <path d="M2.5 5.5a.5.5 0 0 0 0 1h11a.5.5 0 0 0 0-1h-11zM5.854 10.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708l-3 3a.5.5 0 0 0 0 .708z"/>
+                          <path fill-rule="evenodd" d="M5.293 2.293a1 1 0 0 1 1.414 0l4 4a1 1 0 0 1 0 1.414l-4 4a1 1 0 0 1-1.414-1.414L9.586 8 5.293 3.707a1 1 0 0 1 0-1.414z"/>
+                          <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 0 1 0 1.414l-4 4a1 1 0 0 1-1.414-1.414l4-4a1 1 0 0 1 1.414 0z"/>
+                        </svg>
+                    </button></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function deleteCity(city) {
+            // Enviar una solicitud para eliminar la ciudad
+            fetch('/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ city: city }),
+            }).then(response => {
+                if (response.status === 200) {
+                    // Recargar la página después de eliminar
+                    location.reload();
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
