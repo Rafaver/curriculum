@@ -1,89 +1,50 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Curriculum con Bootstrap</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        body {
-            background-color: #f2f2f2;
-            font-family: Arial, sans-serif;
-        }
-
-        .container {
-            background-color: #ffffff;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-top: 20px;
-        }
-
-        .section-title {
-            font-size: 24px;
-            color: #007bff;
-            margin-top: 20px;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        ul li {
-            margin: 10px 0;
-        }
-
-        .centered-img {
-            display: block;
-            margin: 0 auto;
-            width: 150px; /* Añadido para limitar el tamaño de la imagen */
-            border-radius: 50%; /* Agregado para dar forma redonda a la imagen */
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clima</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </head>
 
-<body>
-    <div class="container">
-        <div class="text-center">
-            <img src="https://pbs.twimg.com/media/FYC4mfCXoAYcZvL.jpg" alt="Tu Foto de Perfil" class="img-thumbnail centered-img">
-        </div>
-        <h1 class="section-title">Datos Personales</h1>
-        <ul>
-            <li><strong>Dirección:</strong> Rafael Isla trinitaria Cooperativa San Cristóbal MZ#543 SOL#04</li>
-            <li><strong>Cédula de Identidad:</strong> 0959357609</li>
-            <li><strong>Nacionalidad:</strong> Ecuatoriana</li>
-            <li><strong>Fecha de Nacimiento:</strong> 10 de mayo del 2003</li>
-            <li><strong>Lugar de Nacimiento:</strong> Guayaquil</li>
-            <li><strong>Edad:</strong> 19 Años</li>
-            <li><strong>Estado Civil:</strong> Soltero</li>
-            <li><strong>Correo:</strong> aaronquizhpi3@gmail.com</li>
-        </ul>
-        <h1 class="section-title">Formación Académica</h1>
-        <ul>
-            <li><strong>Nombre:</strong> Quizhpi Aviles Aaron Rafael</li>
-            <li><strong>Dirección:</strong> Isla trinitaria Cooperativa San Cristóbal MZ#543 SOL#04</li>
-            <li><strong>Celular:</strong> 0988591882 – 0998077627</li>
-            <li><strong>Estudios Superiores:</strong> Universidad de Guayaquil</li>
-            <li><strong>Facultad:</strong> Ciencias Administrativas FCA</li>
-            <li><strong>Título a Obtener:</strong> Gestor de la Información Gerencial - cursando 1er semestre</li>
-            <li><strong>Instrucción Secundaria:</strong> Unidad Educativa Hugo Ortiz Garces</li>
-            <li><strong>Especialización:</strong> Contabilidad</li>
-            <li><strong>Título Obtenido:</strong> Bachiller - Técnico de servicios contabilidad</li>
-            <li><strong>Experiencia Laboral:</strong> Ayudante de archivo durante 4 meses en Inmobiliaria María Piedad S.</li>
-        </ul>
-        <h1 class="section-title">Experiencias Laborales</h1>
-        <ul>
-            <li>Ayudante de archivo durante 4 meses en Inmobiliaria María Piedad S.</li>
-        </ul>
-        <h1 class="section-title">Referencias</h1>
-        <ul>
-            <li><strong>Nombre:</strong> C.P.A. Jazmin Leonor Conforme Arellano</li>
-            <li><strong>Contacto:</strong> 098 411 5711</li>
-            <li><strong>Nombre:</strong> C.P.A. Shirley Catuto Domínguez</li>
-            <li><strong>Contacto:</strong> 099 916 4362</li>
-        </ul>
+<body style ="background-color: rgba(30, 204, 210, 0.377);">
+  <div class="text-center">
+    <img src="https://images.unsplash.com/photo-1682686581220-689c34afb6ef?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Tu Foto de Perfil" class="img-thumbnail centered-img">
+</div>
+  <div class="d-lg-none">Investiga el Clima</div>
+  <h2>Investiga el Clima</h2>
+  <br>
+  <i class="bi bi-trash3-fill"></i>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+  </svg>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitch" viewBox="0 0 16 16">
+    <path d="M3.857 0 1 2.857v10.286h3.429V16l2.857-2.857H9.57L14.714 8V0H3.857zm9.714 7.429-2.285 2.285H9l-2 2v-2H4.429V1.143h9.142v6.286z"/>
+    <div class="input-group flex-nowrap">
+      <span class="input-group-text" id="addon-wrapping"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-square-fill" viewBox="0 0 16 16">
+        <path d="M0 14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v12zm4.5-6.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5a.5.5 0 0 1 0-1z"/>
+      </svg></span>
+      <input type="text" class="form-control" placeholder="Ingrese la ciudad " aria-label="Username" aria-describedby="addon-wrapping">
     </div>
-</body>
-
+  </svg>
+  <br>
+  <a class="recent-location-item featured-location  " href="/web-api/three-day-redirect?key=127947&amp;target=" data-location-key="127947" data-fetch="false" data-ga-text="Guayaquil, Guayas">
+    <div class="recent-locaton-name-wrapper">
+      <div class="recent-location-name ">Guayaquil<span class="recent-location-short-admin-name">, Ecuador</span></div>
+      
+    </div>
+    <div class="recent-location-admin-name">Ecuador</div>
+    <div class="recent-location-current-weather-wrapper">
+      <svg class="recent-location-icon" data-src="/images/weathericons/38.svg" viewBox="0 0 288 288" width="32" height="32"><g stroke-width="9.63" fill="none" fill-rule="evenodd"><path d="M235.937 174.607A64.663 64.663 0 0 0 272 146.826c-25.176 5.672-51.244-4.75-65.569-26.217-14.325-21.466-13.945-49.538.954-70.609-28.582 4.311-50.778 27.157-54.263 55.852" stroke="#686763" stroke-linejoin="bevel" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: #a8a095;"></path><path d="M71.993 237.44c-30.58-.066-55.317-24.91-55.25-55.49.066-30.58 24.91-55.316 55.49-55.25h9.293c17.698-20.794 46.193-28.857 72.163-20.418 25.97 8.438 44.283 31.71 46.378 58.937h11.652c19.943 0 36.11 16.167 36.11 36.11 0 19.944-16.167 36.112-36.11 36.112H71.993Z" stroke="#BABABA" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: #000000;"></path></g></svg>
+      <span class="recent-location-temp">
+  28° <span class="recent-location-temp-unit">C</span>
+      </span>
+    </div>
+    <div class="recent-location-real-feel">
+  RealFeel		<span class="recent-location-real-feel-value">28°</span>
+    </div>
+  </a>
+  <button type="button" class="btn btn-primary btn-sm">search</button>
+</body >
 </html>
