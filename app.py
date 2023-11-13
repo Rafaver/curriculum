@@ -24,6 +24,9 @@ def get_weather_data(city):
             'date_time': datetime.fromtimestamp(r['dt']).strftime('%Y-%m-%d %H:%M:%S')
         }
     return None
+@app.route('/clima', methods=['GET'])
+def clima_page():
+    return render_template('weather.html', saved_cities=saved_cities)
 
 def save_city(city_data):
     saved_cities.append(city_data)
@@ -31,10 +34,6 @@ def save_city(city_data):
 
 def delete_city(city):
     saved_cities[:] = [city_data for city_data in saved_cities if city_data['city_name'] != city]
-
-@app.route('/')
-def index():
-    return render_template('weather.html', saved_cities=saved_cities)
 
 @app.route('/weather', methods=['POST'])
 def weather():
@@ -44,15 +43,24 @@ def weather():
 
 @app.route('/save_city', methods=['POST'])
 def save_city_route():
-    city_data = request.get_json()
-    response = save_city(city_data)
-    return jsonify(response)
+    city = request.form.get('city')
+    weather_data = get_weather_data(city)
+
+    if weather_data:
+        response = save_city(weather_data)
+        return jsonify(response)
+    else:
+        return jsonify({'success': False, 'message': 'Error al obtener datos meteorológicos'})
+
+@app.route('/saved_cities', methods=['GET'])
+def saved_cities_page():
+    return render_template('weather.html', saved_cities=saved_cities)
 
 @app.route('/delete', methods=['POST'])
 def delete():
     city = request.form['city']
     delete_city(city)
-    return redirect(url_for('index'))
+    return jsonify({'success': True})
 
 if __name__ == '__main__':
     app.run(debug=True)
