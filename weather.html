@@ -10,17 +10,24 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            font-family: 'Georgia Pro Cond Black', sans-serif;
             background-image: url('https://i.gifer.com/fetch/w300-preview/c6/c6a8937c4b4bb6874ade7d395e470fbc.gif');
             background-size: cover;
-            color: #ffffff;
         }
         .search-container {
-            background-color: rgba(51, 51, 51, 0.8);
+            background-color: #333;
             padding: 20px;
             width: 400px;
             border-radius: 5px;
             text-align: center;
+            margin-bottom: 20px;
+        }
+    
+        .favorites-container {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            color: white;
         }
         .search-bar {
             width: 70%;
@@ -37,22 +44,17 @@
             border-radius: 5px;
             border: none;
         }
-        #clearButton {
-            cursor: pointer;
-            background-color: #dc3545;
+        .results {
+            background-color: #555;
             color: white;
             padding: 10px;
-            border-radius: 5px;
-            border: none;
-            margin-left: 10px;
-        }
-        .results {
-            background-color: rgba(85, 85, 85, 0.8);
-            color: #ffffff;
-            padding: 20px;
-            margin-top: 20px;
+            margin-top: 10px;
             border-radius: 5px;
             text-align: left;
+        }
+        .favorite-item {
+            font-size: 1.2em;
+            color: #28a745; /* Verde para resaltar la ciudad favorita */
         }
         .delete-button {
             cursor: pointer;
@@ -68,90 +70,149 @@
             border: none;
             margin-left: 10px;
         }
-        .favorites-container {
-            background-color: rgba(51, 51, 51, 0.8);
-            color: #ffffff;
-            padding: 20px;
-            margin-top: 20px;
+        #clearButton {
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
             border-radius: 5px;
-            text-align: left;
-        }
-        .favorite-item {
-            font-size: 18px;
-            font-weight: bold;
-            color: #ffc107; /* Amarillo */
+            border: none;
+            margin-left: 10px;
         }
     </style>
 </head>
 <body>
     <div class="search-container">
-        <h2>Busqueda de clima por ciudad</h2>
         <input type="text" class="search-bar" placeholder="Buscar ciudad..." id="cityInput">
         <button onclick="searchWeather()" id="searchButton">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
             </svg>
         </button>
-        <button onclick="clearResults()" id="clearButton">Limpiar Resultados</button>
         <div id="results" class="results"></div>
+        <button id="clearButton" onclick="clearResults()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eraser-fill" viewBox="0 0 16 16">
+                <path d="M8.086 2.207a2 2 0 0 1 2.828 0l3.879 3.879a2 2 0 0 1 0 2.828l-5.5 5.5A2 2 0 0 1 7.879 15H5.12a2 2 0 0 1-1.414-.586l-2.5-2.5a2 2 0 0 1 0-2.828l6.879-6.879zm.66 11.34L3.453 8.254 1.914 9.793a1 1 0 0 0 0 1.414l2.5 2.5a1 1 0 0 0 .707.293H7.88a1 1 0 0 0 .707-.293l.16-.16z"/>
+            </svg>
+            Borrar Datos de Búsqueda
+        </button>
     </div>
 
     <div class="favorites-container" id="favoritesContainer">
         <h2>Ciudades Favoritas</h2>
-        <!-- Aquí se mostrarán las ciudades guardadas -->
+        <div id="savedCities"></div>
     </div>
 
     <script>
         function searchWeather() {
-            // Implementa la lógica para buscar el clima de la ciudad ingresada
-            // y muestra los resultados formateados en el contenedor de resultados
             const cityInput = document.getElementById('cityInput').value;
             const resultsContainer = document.getElementById('results');
+            
+            // Validar si no se ha ingresado el nombre de la ciudad
+            if (!cityInput.trim()) {
+                resultsContainer.innerHTML = '';
+                alert('No ha ingresado el nombre de la ciudad que desea buscar.');
+                return;
+            }
 
-            // Lógica de búsqueda simulada
-            const weatherData = {
-                city_name: cityInput,
-                temperature: '26°C',
-                description: 'Soleado',
-                date_time: '2023-11-12 12:00:00'
-            };
+            fetch(`/weather?city=${cityInput}`, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(weatherData => {
+                // Validar si la ciudad no fue encontrada
+                if (!weatherData.city_name) {
+                    resultsContainer.innerHTML = '';
+                    alert('Ciudad no encontrada o no existente. Por favor, ingrese un nombre de ciudad válido.');
+                    return;
+                }
 
-            const resultsHtml = `
-                <p class="favorite-item">Ciudad: ${weatherData.city_name}</p>
-                <p>Temperatura: ${weatherData.temperature}</p>
-                <p>Clima: ${weatherData.description}</p>
-                <p>Descripción: ${weatherData.description}</p>
-                <p>Fecha y Hora de Búsqueda: ${weatherData.date_time}</p>
-                <button id="saveButton" onclick="saveToFavorites('${weatherData.city_name}', '${weatherData.temperature}', '${weatherData.description}', '${weatherData.date_time}')">Guardar en Favoritos
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-suit-heart-fill" viewBox="0 0 16 16">
-                        <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
-                    </svg>
-                </button>
-            `;
+                const resultsHtml = `
+                    <p class="favorite-item">Ciudad: ${weatherData.city_name}</p>
+                    <p>Temperatura: ${weatherData.temperature}°C</p>
+                    <p>Clima: ${weatherData.description}</p>
+                    <p>Descripción: ${weatherData.description}</p>
+                    <p>Fecha y Hora de Búsqueda: ${weatherData.date_time}</p>
+                    <button id="saveButton" onclick="saveToFavorites('${weatherData.city_name}', '${weatherData.temperature}', '${weatherData.description}', '${weatherData.date_time}')" style="background-color: #ffc107; color: white; padding: 10px; border-radius: 5px; border: none; margin-left: 10px;">
+                        Guardar en Favoritos
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-suit-heart-fill" viewBox="0 0 16 16">
+                            <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
+                        </svg>
+                    </button>
+                `;
 
-            resultsContainer.innerHTML = resultsHtml;
+                resultsContainer.innerHTML = resultsHtml;
+            })
+            .catch(error => {
+                console.error('Error al obtener datos meteorológicos', error);
+                resultsContainer.innerHTML = '<p>Error al obtener datos meteorológicos</p>';
+            });
         }
 
         function saveToFavorites(cityName, temperature, description, dateTime) {
-            // Implementa la lógica para guardar en ciudades favoritas
-            // Puedes usar la función save_city_route() del servidor Flask
-            const favoritesContainer = document.getElementById('favoritesContainer');
+            fetch('/save_city', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    city: cityName,
+                }),
+            })
+            .then(response => response.json())
+            .then(response => {
+                if (response.success) {
+                    const favoritesContainer = document.getElementById('savedCities');
+                    const favoritesHtml = `
+                        <div id="${cityName}">
+                            <p class="favorite-item">Ciudad: ${cityName}</p>
+                            <p>Temperatura: ${temperature}°C</p>
+                            <p>Clima: ${description}</p>
+                            <p>Descripción: ${description}</p>
+                            <p>Fecha y Hora de Búsqueda: ${dateTime}</p>
+                            <button class="delete-button" onclick="deleteFromFavorites('${cityName}')">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    `;
+                    favoritesContainer.insertAdjacentHTML('beforeend', favoritesHtml);
+                } else {
+                    alert('Error al guardar la ciudad en favoritos');
+                }
+            })
+            .catch(error => {
+                console.error('Error al guardar la ciudad en favoritos', error);
+                alert('Error al guardar la ciudad en favoritos');
+            });
+        }
 
-            // Lógica para agregar a favoritos simulada
-            const favoritesHtml = `
-                <p class="favorite-item">Ciudad: ${cityName}</p>
-                <p>Temperatura: ${temperature}</p>
-                <p>Clima: ${description}</p>
-                <p>Descripción: ${description}</p>
-                <p>Fecha y Hora de Búsqueda: ${dateTime}</p>
-            `;
-
-            favoritesContainer.innerHTML += favoritesHtml;
+        function deleteFromFavorites(cityName) {
+            fetch('/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `city=${cityName}`,
+            })
+            .then(response => response.json())
+            .then(response => {
+                if (response.success) {
+                    const cityElement = document.getElementById(cityName);
+                    cityElement.parentNode.removeChild(cityElement);
+                } else {
+                    alert('Error al borrar la ciudad de favoritos');
+                }
+            })
+            .catch(error => {
+                console.error('Error al borrar la ciudad de favoritos', error);
+                alert('Error al borrar la ciudad de favoritos');
+            });
         }
 
         function clearResults() {
-            // Limpia los resultados de búsqueda
-            document.getElementById('results').innerHTML = '';
+            const resultsContainer = document.getElementById('results');
+            resultsContainer.innerHTML = '';
         }
     </script>
 </body>
