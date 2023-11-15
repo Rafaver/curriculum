@@ -1,15 +1,14 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask import Flask, render_template, request, jsonify
 import requests
 from datetime import datetime
-from dotenv import load_dotenv, dotenv_values
-import os
+from dotenv import dotenv_values
 
 config = dotenv_values('.env')
 
 app = Flask(__name__)
 app.template_folder = 'Templates'
 
-saved_cities = []  # Lista para almacenar temporalmente las ciudades guardadas
+saved_cities = []
 
 def get_weather_data(city):
     API_KEY = config['API_KEY']
@@ -21,19 +20,22 @@ def get_weather_data(city):
             'temperature': r['main']['temp'],
             'humidity': r['main']['humidity'],
             'description': r['weather'][0]['description'],
+            'icon': r['weather'][0]['icon'],
             'date_time': datetime.fromtimestamp(r['dt']).strftime('%Y-%m-%d %H:%M:%S')
         }
     return None
+
 @app.route('/clima', methods=['GET'])
 def clima_page():
     return render_template('weather.html', saved_cities=saved_cities)
 
 def save_city(city_data):
     saved_cities.append(city_data)
-    return {'success': True}
+    return {'success': True, 'saved_cities': saved_cities}  # Retorna la lista actualizada de ciudades guardadas
 
 def delete_city(city):
-    saved_cities[:] = [city_data for city_data in saved_cities if city_data['city_name'] != city]
+    global saved_cities
+    saved_cities = [city_data for city_data in saved_cities if city_data['city_name'] != city]
 
 @app.route('/weather', methods=['POST'])
 def weather():
@@ -42,7 +44,7 @@ def weather():
     return jsonify(weather_data)
 
 @app.route('/save_city', methods=['POST'])
-def save_city_route():
+def save_city_handler():
     city = request.form.get('city')
     weather_data = get_weather_data(city)
 
