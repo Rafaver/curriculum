@@ -2,9 +2,13 @@ from flask import Flask, render_template, request, jsonify
 import requests
 from datetime import datetime
 from dotenv import dotenv_values
-
+from sqlalchemy import create_engine,MetaData,Table,column,String,Nullable,Integer
 config = dotenv_values('.env')
+metaData=MetaData
 
+cities= Table("cities",metaData,
+              column('id', Integer(),primary_key=True,autoincrement=True),
+              column('id', String(100),Nullable=False,unique=True))
 app = Flask(__name__)
 app.template_folder = 'Templates'
 
