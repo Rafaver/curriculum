@@ -128,7 +128,7 @@
 </head>
 
 <body>
-    <div class="main-container">
+     <div class="main-container">
         <!-- Contenedor para búsqueda de clima -->
         <div class="search-container">
             <div id="searchTitleContainer">
@@ -182,8 +182,9 @@
                     <p class="description">Descripción: ${weatherData.description}</p>
                     <p class="datetime">Fecha y Hora de Búsqueda: ${weatherData.date_time}</p>
                     <button id="saveButton" onclick="saveToFavorites('${weatherData.city_name}', '${weatherData.temperature}', '${weatherData.description}', '${weatherData.date_time}')">
-                        Guardar en Favoritos
-                    </button>
+    Guardar en Favoritos
+</button>
+
                 `;
 
                     resultsContainer.innerHTML = resultsHtml;
@@ -231,27 +232,23 @@
         }
 
         function deleteFromFavorites(cityName) {
-            fetch('/delete', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `city=${cityName}`,
-            })
-                .then(response => response.json())
-                .then(response => {
-                    if (response.success) {
-                        const cityElement = document.getElementById(cityName);
-                        cityElement.parentNode.removeChild(cityElement);
-                    } else {
-                        alert('Error al borrar la ciudad de favoritos');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error al borrar la ciudad de favoritos', error);
+        fetch(`/delete_city/${cityName}`, {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(response => {
+                if (response.success) {
+                    const cityElement = document.getElementById(cityName);
+                    cityElement.parentNode.removeChild(cityElement);
+                } else {
                     alert('Error al borrar la ciudad de favoritos');
-                });
-        }
+                }
+            })
+            .catch(error => {
+                console.error('Error al borrar la ciudad de favoritos', error);
+                alert('Error al borrar la ciudad de favoritos');
+            });
+    }
 
         function clearResults() {
             const resultsContainer = document.getElementById('results');
